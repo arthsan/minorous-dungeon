@@ -5,29 +5,62 @@ let frames = 0;
 const canvas = document.getElementById('labyrinth');
 const ctx = canvas.getContext('2d');
 
+
+let wallsX = [];
+let wallsY = [];
+let wallsArr = [];
+let walls = [];
+
 // grid canvas
-const gridCanvas = () => {
-    ctx.fillStyle = 'grey';
-    for(let i = 25; i <= 1325; i += 50){
-        ctx.fillRect(i, 0, 25, canvas.height);
-        ctx.fillRect(0, i, canvas.width, 25)
+class Grid{
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = canvas.width;
+        this.height = canvas.height;
+    }
+    
+    
+    gridWallY() {
+        ctx.fillStyle = 'black';
+        for(let i = 50; i <= this.width; i += 50){
+            ctx.fillRect(i, 0, 25, canvas.height);
+            wallsY.push(i);
+        }
+    }
+    
+    gridWallX() {
+        ctx.fillStyle = 'black';
+        for(let i = 50; i <= this.height; i += 50){
+            ctx.fillRect(0, i, canvas.width, 25);
+            wallsX.push(i)
+        }   
+    }
+
+    gridCoord() {
+        for(let i = 0; i < wallsX.length ; i +=1){
+            wallsArr.push(wallsX[i]);
+            wallsArr.push(wallsY[i]);
+            walls.push(wallsArr.splice(0,2));
+        }console.log(walls[1])
+    }
+    // border canvas
+    borderCanvas = () => {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, 25, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, 25);
+        ctx.fillRect(canvas.width - 25, 0, 25, canvas.height);
+        ctx.fillRect(0, canvas.height - 25, canvas.width, 25);
     }
 }
 
-// border canvas
-const borderCanvas = () => {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, 25, canvas.height);
-    ctx.fillRect(0, 0, canvas.width, 25);
-    ctx.fillRect(canvas.width - 25, 0, 25, canvas.height);
-    ctx.fillRect(0, canvas.height - 25, canvas.width, 25);
-}
+const ourWalls = new Grid();
 
 // Our hero
 class Hero {
     constructor(){
-        this.x = 50;
-        this.y = 50;
+        this.x = 75;
+        this.y = 75;
         this.size = 25;
         this.color = 'red'
     }
@@ -79,9 +112,11 @@ const render = () => {
     resetCanvas();
     
     // canvas drawning
-    gridCanvas()
-    borderCanvas()
-    
+    ourWalls.gridWallX()
+    ourWalls.gridWallY()
+    ourWalls.borderCanvas()
+    ourWalls.gridCoord()
+
     // drawing hero in current position
     ourHero.draw();
     
