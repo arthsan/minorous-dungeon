@@ -22,6 +22,8 @@ class Grid{
     
     
     gridWallY() {
+        // let r = Math.random(Math.floor())*777%50 ;
+        // console.log(r)
         ctx.fillStyle = 'black';
         for(let i = 50; i <= this.width; i += 50){
             ctx.fillRect(i, 0, 25, canvas.height);
@@ -42,7 +44,7 @@ class Grid{
             wallsArr.push(wallsX[i]);
             wallsArr.push(wallsY[i]);
             walls.push(wallsArr.splice(0,2));
-        }console.log(walls[1])
+        }
     }
     // border canvas
     borderCanvas = () => {
@@ -59,8 +61,8 @@ const ourWalls = new Grid();
 // Our hero
 class Hero {
     constructor(){
-        this.x = 75;
-        this.y = 75;
+        this.x = 300;
+        this.y = 300;
         this.size = 25;
         this.color = 'red'
     }
@@ -90,11 +92,32 @@ class Hero {
     }
 }
 
+const colisioncheck = () => {
+    walls.forEach(elem => {
+        elem.forEach(() => {
+            if(elem[0] < ourHero.x){
+                ourHero.x = ourHero.x - ourHero.size/5;
+                // console.log(elem[0])
+            }
+            if(elem[1] < ourHero.y){
+                ourHero.y = ourHero.y - ourHero.size/5;
+            }
+        })
+    
+    })
+}
+
 // hero
 const ourHero = new Hero();
 
 // Canvas cleaner
-const resetCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height)
+const resetCanvas = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    wallsX = [];
+    wallsY = [];
+    wallsArr = [];
+    walls = [];
+}
 
 const startGame = () => {
     // start animation
@@ -119,6 +142,9 @@ const render = () => {
 
     // drawing hero in current position
     ourHero.draw();
+
+    // colision check
+    colisioncheck()
     
     // increment for each loop
     frames += 1;
