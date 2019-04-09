@@ -68,7 +68,7 @@ class Grid{
 
 // DRAWNING WALLS
 const createWalls = () => {
-    for(let i = 0;i < canvas.width; i += 25){
+    for(let i = 0;i < canvas.width; i += 50){
         for(let j = 0; j< canvas.height;j += 50){
             wallStore.push(new Grid(i, j))
         }
@@ -116,16 +116,20 @@ class Hero {
 
 const colisioncheck = () => {
     wallStore.forEach(elem => {
-        if(elem.x === ourHero.x + ourHero.size -5 && elem.y <= ourHero.y && ourHero.y < elem.y + 25){
+        // RIGHT BARRIER
+        if(elem.x === ourHero.x + ourHero.size -5 && ourHero.y > elem.y - 25 && ourHero.y < elem.y + 25){
             ourHero.x = ourHero.x - ourHero.size/5;
         }
-        if(elem.y === ourHero.y + ourHero.size -5 && elem.x <= ourHero.x && ourHero.x < elem.x + 25){
+        // TOP BARRIER
+        if(elem.y === ourHero.y + ourHero.size -5 && ourHero.x > elem.x - 25 && ourHero.x < elem.x + 25){
             ourHero.y = ourHero.y - ourHero.size/5;
         }
-        if(elem.x === ourHero.x - ourHero.size + 5 && elem.y <= ourHero.y && ourHero.x < elem.y - 25){
+        // LEFT BARRIER
+        if(elem.x === ourHero.x - ourHero.size + 5 && ourHero.y < elem.y + 25 && ourHero.y > elem.y -25){
             ourHero.x = ourHero.x + ourHero.size/5;
         }
-        if(elem.y === ourHero.y - ourHero.size + 5 && elem.x <= ourHero.x && ourHero.y > elem.x - 25){
+        // BOTTOM BARRIER
+        if(elem.y === ourHero.y - ourHero.size + 5 && ourHero.x < elem.x + 25 && ourHero.x > elem.x - 25){
             ourHero.y = ourHero.y + ourHero.size/5;
         }
     })        
