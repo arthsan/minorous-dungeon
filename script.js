@@ -2,9 +2,10 @@
 let frames = 0;
 let wallsX = [];
 let wallsY = [];
-let wallsArr = []
+let wallsArr = [];
 let walls = [];
-let wallStore = []
+let wallStore = [];
+let gameOver = false;
 
 // Loading canvas
 const canvas = document.getElementById('labyrinth');
@@ -114,6 +115,7 @@ class Hero {
     }
 }
 
+// COLLISION HERO
 const colisioncheck = () => {
     wallStore.forEach(elem => {
         // RIGHT BARRIER
@@ -135,17 +137,61 @@ const colisioncheck = () => {
     })        
 }
 
-// hero
+// MINOROUS
+class Minorous{
+    constructor(){
+        this.x = 375;
+        this.y = 375;
+        this.size = 25;
+        this.color = 'yellow';
+        this.direction = 'right';
+    }
+
+    draw() {
+        if(this.x < 25) this.x = 25;
+        if(this.x > canvas.width - 50) this.x = canvas.width - 50;
+        if(this.y < 25) this.y = 25;
+        if(this.y > canvas.height - 25) this.y = canvas.height - 50;
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(this.x, this.y, this.size, this.size)
+    }
+
+    moveMinos() {
+        if (this.direction === 'right') {
+            this.x += 1;
+        }
+    }
+}
+
+const colisionMinos = () => {
+    if(ourMinos.x === ourHero.x + ourHero.size && ourMinos.y > ourHero.y - ourHero.size && ourMinos.y < ourHero.y + ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.y === ourHero.y + ourHero.size && ourMinos.x > ourHero.x - ourHero.size && ourMinos.x < ourHero.x + ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.x === ourHero.x - ourHero.size && ourMinos.y < ourHero.y + ourHero.size && ourMinos.y > ourHero.y - ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.y === ourHero.y - ourHero.size && ourMinos.x < ourHero.x + ourHero.size && ourMinos.x > ourHero.x - ourHero.size){
+        return gameOver = true;
+    }
+}
+
+
+// INSTANCES
 const ourHero = new Hero();
-const ourWalls = new Grid()
+const ourWalls = new Grid();
+const ourMinos = new Minorous()
+
 
 // Canvas cleaner
 const resetCanvas = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    wallsX = [];
-    wallsY = [];
-    wallsArr = [];
-    walls = [];
+    // wallsX = [];
+    // wallsY = [];
+    // wallsArr = [];
+    // walls = [];
     wallStore = [];
 }
 
@@ -159,32 +205,40 @@ const startGame = () => {
 }
 
 const render = () => {
-    
-    // clean everything
-    resetCanvas();
-    
-    // canvas drawning
-    // ourWalls.gridWallX()
-    // ourWalls.gridWallY()
-    // ourWalls.gridCoord()
-    
-    // attempt drawing
-    createWalls()
-    draWalls()
-    ourWalls.borderCanvas()
-    
-    
-    // drawing hero in current position
-    ourHero.draw();
-    
-    // colision check
-    colisioncheck()
-    
-    // increment for each loop
-    frames += 1;
-    
-    // move listener
-    window.requestAnimationFrame(render)
+    if(gameOver === false){
+        // clean everything
+        resetCanvas();
+        
+        // canvas drawning
+        // ourWalls.gridWallX()
+        // ourWalls.gridWallY()
+        // ourWalls.gridCoord()
+        
+        // attempt drawing
+        createWalls()
+        draWalls()
+        ourWalls.borderCanvas()
+        
+        
+        // drawing hero in current position
+        ourHero.draw();
+
+        // drawning minorous
+        ourMinos.draw();
+        ourMinos.moveMinos();
+        
+        // colision check
+        colisioncheck();
+        colisionMinos();
+
+        // increment for each loop
+        frames += 1;
+        
+        // move listener
+        window.requestAnimationFrame(render)
+    } else {
+        alert('game over')
+    }
 }
 
 startGame()
@@ -192,3 +246,8 @@ startGame()
 document.onkeydown = function(e) {
     ourHero.moveHero(e)
 }
+
+
+// north, east, west, south
+// a cada n tempo, sortear qual a nova direção
+// o minotauro pode mudar de posição a cada meio segundo, a cada segundo, ou 2 segundos ou 3 segundos ou 4 segundos
