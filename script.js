@@ -7,6 +7,7 @@ let walls = [];
 let wallStore = [];
 let gameOver = false;
 let gameWon = false;
+let arrMinos = [];
 
 // Loading canvas
 const canvas = document.getElementById('labyrinth');
@@ -138,6 +139,7 @@ class Hero {
                 console.log('peguei');
                 this.items.push(ourTrophy);
                 ourTrophy.position = false;
+                gameWon = true;
             }
         }
     }
@@ -220,10 +222,10 @@ class Minorous{
             else if(this.y <= 50){
                 this.direction = 'up';
             }
-            else if(this.x >= canvas.width - 50){
+            else if(this.x >= canvas.width - 75){
                 this.direction = 'left';
             }
-            else if(this.y >= canvas.height - 50){
+            else if(this.y >= canvas.height - 75){
                 this.direction = 'down';
             }
     
@@ -335,10 +337,14 @@ const bingoMinosY = () => {
 // SET TIME INTERVAL
 const timeBingo = () => {
     if(frames === 15 && bingoYorN() === 1){
-        ourMinos.randDirection();
+        arrMinos.forEach(rand =>{
+            rand.randDirection();
+        })
         frames = 0;
     }else if(frames === 30 && bingoYorN() ===1) {
-        ourMinos.randDirection();
+        arrMinos.forEach(rands =>{
+            rands.randDirection();
+        })
         frames = 0;
     } else if (frames > 30) {
         frames = 0
@@ -349,7 +355,7 @@ const timeBingo = () => {
 // INSTANCES
 const ourHero = new Hero(bingoHeroX (), bingoHeroY ());
 const ourWalls = new Grid();
-const ourMinos = new Minorous(bingoMinosX (), bingoMinosY ());
+// const ourMinos = new Minorous(bingoMinosX (), bingoMinosY ());
 const ourTrophy = new Trophy(bingoTrophyX (), bingoTrophyY ());
 
 
@@ -360,6 +366,14 @@ const resetCanvas = () => {
 }
 
 const startGame = () => {
+    // instance minos
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));    
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));    
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));    
+    arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));    
+
     // start animation
     render();
     
@@ -387,13 +401,19 @@ const render = () => {
         ourHero.draw();
 
         // DRANING MINOS IN CURRENT POSITION
-        ourMinos.draw();
-        ourMinos.moveMinos();
+        arrMinos.forEach(min => {
+            min.draw();
+            min.moveMinos();
+            min.colisionMinos();
+            min.minosWallColision();
+        })
+        // ourMinos.draw();
+        // ourMinos.moveMinos();
         
         // COLLISION CHECKER
         ourHero.colisioncheck();
-        ourMinos.colisionMinos();
-        ourMinos.minosWallColision();
+        // ourMinos.colisionMinos();
+        // ourMinos.minosWallColision();
         getItens()
         
         // increment for each loop
