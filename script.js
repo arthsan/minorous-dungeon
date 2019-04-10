@@ -12,8 +12,6 @@ const canvas = document.getElementById('labyrinth');
 const ctx = canvas.getContext('2d');
 
 
-// let r1 = Math.floor(Math.random()*3);
-// let r2 = Math.floor(Math.random()*2);
 
 
 
@@ -151,7 +149,7 @@ class Minorous{
         if(this.x < 25) this.x = 25;
         if(this.x > canvas.width - 50) this.x = canvas.width - 50;
         if(this.y < 25) this.y = 25;
-        if(this.y > canvas.height - 25) this.y = canvas.height - 50;
+        if(this.y > canvas.height - 50) this.y = canvas.height - 50;
         ctx.fillStyle = 'yellow';
         ctx.fillRect(this.x, this.y, this.size, this.size)
     }
@@ -159,10 +157,74 @@ class Minorous{
     moveMinos() {
         if (this.direction === 'right') {
             this.x += 1;
+        }else if (this.direction === 'left'){
+            this.x -= 1;
+        }else if (this.direction === 'up'){
+            this.y += 1;
+        }else if (this.direction === 'down'){
+            this.y -= 1
         }
     }
 }
 
+// GENERATE RANDOM DIRECTION
+const randDirection = () => {
+    if(ourMinos.direction === 'right' && bingoDirection() === 0){
+        ourMinos.direction = 'up';
+    }else if(ourMinos.direction === 'right' && bingoDirection() === 1){
+        ourMinos.direction = 'down';
+    }else if(ourMinos.direction === 'right' && bingoDirection() === 2){
+        ourMinos.direction = 'left';
+    }else if(ourMinos.direction === 'up' && bingoDirection() === 0){
+        ourMinos.direction = 'right';
+    }else if(ourMinos.direction === 'up' && bingoDirection() === 1){
+        ourMinos.direction = ' down';
+    }else if(ourMinos.direction === 'up' && bingoDirection() === 2){
+        ourMinos.direction = 'left';
+    }else if(ourMinos.direction = 'down' && bingoDirection() === 0){
+        ourMinos.direction = 'up';
+    }else if(ourMinos.direction = 'down' && bingoDirection() === 1){
+        ourMinos.direction = 'right';
+    }else if(ourMinos.direction = 'down' && bingoDirection() === 2){
+        ourMinos.direction = 'left';
+    }else if(ourMinos.direction = 'left' && bingoDirection() === 0){
+        ourMinos.direction = 'up';
+    }else if(ourMinos.direction = 'left' && bingoDirection() === 1){
+        ourMinos.direction = 'down';
+    }else if(ourMinos.direction = 'left' && bingoDirection() === 2){
+        ourMinos.direction = 'right';
+    }
+}
+
+// GENERATE RANDOM NUMBER
+const bingoYorN = () => {
+    let r2 = Math.floor(Math.random()*2);
+    return r2;
+}
+
+const bingoDirection = () => {
+    let r3 = Math.floor(Math.random()*3);
+    return r3;
+}
+
+
+// SET TIME INTERVAL
+const timeBingo = () => {
+    console.log(frames)
+    if(frames === 60 && bingoYorN() === 1){
+        randDirection();
+        frames = 0;
+    }else if(frames === 120 && bingoYorN() ===1) {
+        randDirection();
+        frames = 0;
+    } else if (frames > 120) {
+        frames = 0
+    }
+    // frames = 0;
+    // console.log(frames)
+}
+
+// COLISION WITH MINOROUS
 const colisionMinos = () => {
     if(ourMinos.x === ourHero.x + ourHero.size && ourMinos.y > ourHero.y - ourHero.size && ourMinos.y < ourHero.y + ourHero.size){
         return gameOver = true;
@@ -227,12 +289,14 @@ const render = () => {
         ourMinos.draw();
         ourMinos.moveMinos();
         
+        
         // colision check
         colisioncheck();
         colisionMinos();
-
+        
         // increment for each loop
         frames += 1;
+        timeBingo()
         
         // move listener
         window.requestAnimationFrame(render)
