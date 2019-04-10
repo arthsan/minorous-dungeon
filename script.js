@@ -92,7 +92,11 @@ class Hero {
         if(this.y < 25) this.y = 25;
         if(this.y > canvas.height - this.size - 25) this.y = canvas.height -50;
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size)
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.beginPath();
+        ctx.fillStyle = radius(this.x + 10, this.y + 10);
+        ctx.rect(this.x - 1250,this.y - 850, 2500, 1800);
+        ctx.fill();
     }
     
     moveHero(e) {
@@ -161,6 +165,14 @@ const getItens = () => {
     }else{
         return false
     }
+}
+
+// RADIAl VISION
+function radius(x,y) {
+    var grd = ctx.createRadialGradient(x, y, 50, x, y, 200);
+    grd.addColorStop(0, "rgba(0,0,0,0)");
+    grd.addColorStop(1, "black")
+    return grd;
 }
 
 
@@ -355,7 +367,6 @@ const timeBingo = () => {
 // INSTANCES
 const ourHero = new Hero(bingoHeroX (), bingoHeroY ());
 const ourWalls = new Grid();
-// const ourMinos = new Minorous(bingoMinosX (), bingoMinosY ());
 const ourTrophy = new Trophy(bingoTrophyX (), bingoTrophyY ());
 
 
@@ -397,8 +408,7 @@ const render = () => {
         // DRAWNING TROPHY IN RANDOM POSITION
         ourTrophy.draw()
 
-        // DRAWNING HERO IN CURRENT POSITION
-        ourHero.draw();
+      
 
         // DRANING MINOS IN CURRENT POSITION
         arrMinos.forEach(min => {
@@ -407,13 +417,12 @@ const render = () => {
             min.colisionMinos();
             min.minosWallColision();
         })
-        // ourMinos.draw();
-        // ourMinos.moveMinos();
-        
+      
+        // DRAWNING HERO IN CURRENT POSITION
+        ourHero.draw();
+
         // COLLISION CHECKER
         ourHero.colisioncheck();
-        // ourMinos.colisionMinos();
-        // ourMinos.minosWallColision();
         getItens()
         
         // increment for each loop
