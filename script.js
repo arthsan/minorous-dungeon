@@ -135,6 +135,23 @@ const colisioncheck = () => {
     })        
 }
 
+// COLISION WITH MINOROUS
+const colisionMinos = () => {
+    if(ourMinos.x === ourHero.x + ourHero.size && ourMinos.y > ourHero.y - ourHero.size && ourMinos.y < ourHero.y + ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.y === ourHero.y + ourHero.size && ourMinos.x > ourHero.x - ourHero.size && ourMinos.x < ourHero.x + ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.x === ourHero.x - ourHero.size && ourMinos.y < ourHero.y + ourHero.size && ourMinos.y > ourHero.y - ourHero.size){
+        return gameOver = true;
+    }
+    if(ourMinos.y === ourHero.y - ourHero.size && ourMinos.x < ourHero.x + ourHero.size && ourMinos.x > ourHero.x - ourHero.size){
+        return gameOver = true;
+    }
+}
+
+
 // MINOROUS
 class Minorous{
     constructor(){
@@ -156,18 +173,18 @@ class Minorous{
 
     moveMinos() {
         if (this.direction === 'right') {
-            this.x += 1;
+            this.x += 5;
         }else if (this.direction === 'left'){
-            this.x -= 1;
+            this.x -= 5;
         }else if (this.direction === 'up'){
-            this.y += 1;
+            this.y += 5;
         }else if (this.direction === 'down'){
-            this.y -= 1
-        }
+            this.y -= 5;
+        }   
     }
 }
 
-// GENERATE RANDOM DIRECTION
+// GENERATE RANDOM DIRECTION MINOS
 const randDirection = () => {
     if(ourMinos.direction === 'right' && bingoDirection() === 0){
         ourMinos.direction = 'up';
@@ -210,36 +227,58 @@ const bingoDirection = () => {
 
 // SET TIME INTERVAL
 const timeBingo = () => {
-    console.log(frames)
-    if(frames === 60 && bingoYorN() === 1){
+    if(frames === 15 && bingoYorN() === 1){
         randDirection();
         frames = 0;
-    }else if(frames === 120 && bingoYorN() ===1) {
+    }else if(frames === 30 && bingoYorN() ===1) {
         randDirection();
         frames = 0;
-    } else if (frames > 120) {
+    } else if (frames > 30) {
         frames = 0
     }
     // frames = 0;
     // console.log(frames)
 }
 
-// COLISION WITH MINOROUS
-const colisionMinos = () => {
-    if(ourMinos.x === ourHero.x + ourHero.size && ourMinos.y > ourHero.y - ourHero.size && ourMinos.y < ourHero.y + ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.y === ourHero.y + ourHero.size && ourMinos.x > ourHero.x - ourHero.size && ourMinos.x < ourHero.x + ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.x === ourHero.x - ourHero.size && ourMinos.y < ourHero.y + ourHero.size && ourMinos.y > ourHero.y - ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.y === ourHero.y - ourHero.size && ourMinos.x < ourHero.x + ourHero.size && ourMinos.x > ourHero.x - ourHero.size){
-        return gameOver = true;
-    }
-}
+const minosWallColision = () => {
+    wallStore.forEach(elem => {
+        // BORDERS CHECK
+        if(ourMinos.x <= 50){
+            ourMinos.direction = 'right';
+        }
+        else if(ourMinos.y <= 50){
+            ourMinos.direction = 'up';
+        }
+        else if(ourMinos.x >= canvas.width - 50){
+            ourMinos.direction = 'left';
+        }
+        else if(ourMinos.y >= canvas.height - 50){
+            ourMinos.direction = 'down';
+        }
 
+        // COLLISIONS WITH WALLS
+        if(elem.x === ourMinos.x + ourMinos.size -5 && ourMinos.y > elem.y - ourMinos.size && ourMinos.y < elem.y + ourMinos.size){
+            console.log('bateu em dir')
+            ourMinos.x = ourMinos.x - 5;
+            ourMinos.direction = 'up';
+        }
+        if(elem.y === ourMinos.y + ourMinos.size -5 && ourMinos.x > elem.x - ourMinos.size && ourMinos.x < elem.x + ourMinos.size){
+            console.log('bateu em top')
+            ourMinos.y = ourMinos.y - 5;
+            ourMinos.direction = 'right';
+        }
+        if(elem.x === ourMinos.x - ourMinos.size +5 && ourMinos.y < elem.y + ourMinos.size && ourMinos.y > elem.y - ourMinos.size){
+            console.log('bateu em esq')
+            ourMinos.x = ourMinos.x + 5;
+            ourMinos.direction = 'down';
+        }
+        if(elem.y === ourMinos.y - ourMinos.size +5 && ourMinos.x < elem.x + ourMinos.size && ourMinos.x > elem.x - ourMinos.size){
+            console.log('bateu em bot')
+            ourMinos.y = ourMinos.y + 5;
+            ourMinos.direction = 'left';
+        }
+    })
+}
 
 // INSTANCES
 const ourHero = new Hero();
@@ -290,9 +329,11 @@ const render = () => {
         ourMinos.moveMinos();
         
         
+        
         // colision check
         colisioncheck();
         colisionMinos();
+        minosWallColision();
         
         // increment for each loop
         frames += 1;
