@@ -12,7 +12,20 @@ const canvas = document.getElementById('labyrinth');
 const ctx = canvas.getContext('2d');
 
 
+// TROPHY
+class Trophy{
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.size = 25;
+        this.color = 'gold';
+    }
 
+    draw() {
+        ctx.fillStyle = 'gold';
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
+}
 
 
 // GRID FOR CANVAS
@@ -24,30 +37,6 @@ class Grid{
         this.height = ourHero.size;
     }
     
-    
-    // gridWallY() {
-        // ctx.fillStyle = '#ccc';
-        // for(let i = 50; i <= this.width; i += 50){
-        //     ctx.fillRect(i, 0, 25, canvas.height);
-        //     wallsY.push(i);
-        // }
-    // }
-    
-    // gridWallX() {
-        // ctx.fillStyle = '#ccc';
-        // for(let i = 50; i <= this.height; i += 50){
-        //     ctx.fillRect(0, i, canvas.width, 25);
-        //     wallsX.push(i)
-        // }
-    // }
-    
-    // gridCoord() {
-        // for(let i = 0; i < wallsX.length ; i +=1){
-        //     wallsArr.push(wallsX[i]);
-        //     wallsArr.push(wallsY[i]);
-        //     walls.push(wallsArr.splice(0,2));
-        // }
-    // }
     // border canvas
     borderCanvas = () => {
         ctx.fillStyle = 'black';
@@ -85,7 +74,7 @@ class Hero {
         this.x = 325;
         this.y = 325;
         this.size = 25;
-        this.color = 'red'
+        this.color = 'blue'
     }
     
     draw() {
@@ -158,7 +147,7 @@ class Minorous{
         this.x = 375;
         this.y = 375;
         this.size = 25;
-        this.color = 'yellow';
+        this.color = 'brown';
         this.direction = 'right';
     }
 
@@ -167,7 +156,7 @@ class Minorous{
         if(this.x > canvas.width - 50) this.x = canvas.width - 50;
         if(this.y < 25) this.y = 25;
         if(this.y > canvas.height - 50) this.y = canvas.height - 50;
-        ctx.fillStyle = 'yellow';
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size, this.size)
     }
 
@@ -224,6 +213,18 @@ const bingoDirection = () => {
     return r3;
 }
 
+const bingoTrophyX = () => {
+    let rtx = Math.floor(Math.random()*25);
+    let mult25x = rtx * 50 + 25;
+    return mult25x;
+}
+
+const bingoTrophyY = () => {
+    let rty = Math.floor(Math.random()*17);
+    let mult25y = rty * 50 + 25;
+    return mult25y;
+}
+
 
 // SET TIME INTERVAL
 const timeBingo = () => {
@@ -240,6 +241,8 @@ const timeBingo = () => {
     // console.log(frames)
 }
 
+
+// MINOS AND WALL COLLISIONS
 const minosWallColision = () => {
     wallStore.forEach(elem => {
         // BORDERS CHECK
@@ -283,7 +286,8 @@ const minosWallColision = () => {
 // INSTANCES
 const ourHero = new Hero();
 const ourWalls = new Grid();
-const ourMinos = new Minorous()
+const ourMinos = new Minorous();
+const ourTrophy = new Trophy(bingoTrophyX (), bingoTrophyY ());
 
 
 // Canvas cleaner
@@ -298,10 +302,12 @@ const resetCanvas = () => {
 
 const startGame = () => {
     // start animation
-    render()
-    // move hero
-    // document.onkeydown = ourHero.moveHero;
-    // ourHero.moveHero(e);
+    render();
+    
+    // start one random number for TROPHY X AND Y
+    bingoTrophyX();
+    bingoTrophyY();
+    
     
 }
 
@@ -320,11 +326,13 @@ const render = () => {
         draWalls()
         ourWalls.borderCanvas()
         
-        
-        // drawing hero in current position
+        // DRAWNING TROPHY IN RANDOM POSITION
+        ourTrophy.draw()
+
+        // DRAWNING HERO IN CURRENT POSITION
         ourHero.draw();
 
-        // drawning minorous
+        // DRANING MINOS IN CURRENT POSITION
         ourMinos.draw();
         ourMinos.moveMinos();
         
