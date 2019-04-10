@@ -6,6 +6,7 @@ let wallsArr = [];
 let walls = [];
 let wallStore = [];
 let gameOver = false;
+let gameWon = false;
 
 // Loading canvas
 const canvas = document.getElementById('labyrinth');
@@ -19,11 +20,17 @@ class Trophy{
         this.y = y;
         this.size = 25;
         this.color = 'gold';
+        this.position = true;
     }
 
     draw() {
-        ctx.fillStyle = 'gold';
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        if(this.position === true){
+            ctx.fillStyle = 'gold';
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+        }else {
+            this.x = -10;
+            this.y = -10;
+        }
     }
 }
 
@@ -48,7 +55,7 @@ class Grid{
 
     draw() {
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
 }
@@ -56,8 +63,8 @@ class Grid{
 
 // DRAWNING WALLS
 const createWalls = () => {
-    for(let i = 0;i < canvas.width; i += 50){
-        for(let j = 0; j< canvas.height;j += 50){
+    for(let i = 0;i < canvas.width; i += 100){
+        for(let j = 0; j< canvas.height;j += 100){
             wallStore.push(new Grid(i, j))
         }
     }
@@ -70,11 +77,12 @@ const draWalls = () => {
 
 // THE HERO
 class Hero {
-    constructor(){
-        this.x = 325;
-        this.y = 325;
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
         this.size = 25;
-        this.color = 'blue'
+        this.color = 'blue';
+        this.items = [];
     }
     
     draw() {
@@ -100,62 +108,76 @@ class Hero {
             this.y += this.size/5;
         }
     }
+
+    // COLLISION HERO
+    colisioncheck (){
+        wallStore.forEach(elem => {
+            // RIGHT BARRIER
+            if(elem.x === this.x + this.size -5 && this.y > elem.y - this.size && this.y < elem.y + this.size){
+                this.x = this.x - this.size/5;
+            }
+            // TOP BARRIER
+            if(elem.y === this.y + this.size -5 && this.x > elem.x - this.size && this.x < elem.x + this.size){
+                this.y = this.y - this.size/5;
+            }
+            // LEFT BARRIER
+            if(elem.x === this.x - this.size + 5 && this.y < elem.y + this.size && this.y > elem.y -this.size){
+                this.x = this.x + this.size/5;
+            }
+            // BOTTOM BARRIER
+            if(elem.y === this.y - this.size + 5 && this.x < elem.x + this.size && this.x > elem.x - this.size){
+                this.y = this.y + this.size/5;
+        }
+        })        
+    }
+
+
+    catch(e) {
+        if(e.keyCode === 32) {
+            if(getItens () === true){
+                console.log('peguei');
+                this.items.push(ourTrophy);
+                ourTrophy.position = false;
+            }
+        }
+    }
 }
 
-// COLLISION HERO
-const colisioncheck = () => {
-    wallStore.forEach(elem => {
-        // RIGHT BARRIER
-        if(elem.x === ourHero.x + ourHero.size -5 && ourHero.y > elem.y - 25 && ourHero.y < elem.y + 25){
-            ourHero.x = ourHero.x - ourHero.size/5;
-        }
-        // TOP BARRIER
-        if(elem.y === ourHero.y + ourHero.size -5 && ourHero.x > elem.x - 25 && ourHero.x < elem.x + 25){
-            ourHero.y = ourHero.y - ourHero.size/5;
-        }
-        // LEFT BARRIER
-        if(elem.x === ourHero.x - ourHero.size + 5 && ourHero.y < elem.y + 25 && ourHero.y > elem.y -25){
-            ourHero.x = ourHero.x + ourHero.size/5;
-        }
-        // BOTTOM BARRIER
-        if(elem.y === ourHero.y - ourHero.size + 5 && ourHero.x < elem.x + 25 && ourHero.x > elem.x - 25){
-            ourHero.y = ourHero.y + ourHero.size/5;
-        }
-    })        
+// GETTING ITENS
+const getItens = () => {
+    if(ourHero.x === ourTrophy.x ){
+        return true;
+    }
+    else if(ourHero.y === ourTrophy.y ){
+        return true;
+    }
+    else if(ourHero.x === ourTrophy.x ){
+        return true;
+    }
+    else if(ourHero.y === ourTrophy.y ){
+        return true;
+    }else{
+        return false
+    }
 }
 
-// COLISION WITH MINOROUS
-const colisionMinos = () => {
-    if(ourMinos.x === ourHero.x + ourHero.size && ourMinos.y > ourHero.y - ourHero.size && ourMinos.y < ourHero.y + ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.y === ourHero.y + ourHero.size && ourMinos.x > ourHero.x - ourHero.size && ourMinos.x < ourHero.x + ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.x === ourHero.x - ourHero.size && ourMinos.y < ourHero.y + ourHero.size && ourMinos.y > ourHero.y - ourHero.size){
-        return gameOver = true;
-    }
-    if(ourMinos.y === ourHero.y - ourHero.size && ourMinos.x < ourHero.x + ourHero.size && ourMinos.x > ourHero.x - ourHero.size){
-        return gameOver = true;
-    }
-}
 
 
 // MINOROUS
 class Minorous{
-    constructor(){
-        this.x = 375;
-        this.y = 375;
-        this.size = 25;
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.size = 50;
         this.color = 'brown';
         this.direction = 'right';
     }
 
     draw() {
         if(this.x < 25) this.x = 25;
-        if(this.x > canvas.width - 50) this.x = canvas.width - 50;
+        if(this.x > canvas.width - 75) this.x = canvas.width - 75;
         if(this.y < 25) this.y = 25;
-        if(this.y > canvas.height - 50) this.y = canvas.height - 50;
+        if(this.y > canvas.height - 75) this.y = canvas.height - 75;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size, this.size)
     }
@@ -171,35 +193,93 @@ class Minorous{
             this.y -= 5;
         }   
     }
-}
 
-// GENERATE RANDOM DIRECTION MINOS
-const randDirection = () => {
-    if(ourMinos.direction === 'right' && bingoDirection() === 0){
-        ourMinos.direction = 'up';
-    }else if(ourMinos.direction === 'right' && bingoDirection() === 1){
-        ourMinos.direction = 'down';
-    }else if(ourMinos.direction === 'right' && bingoDirection() === 2){
-        ourMinos.direction = 'left';
-    }else if(ourMinos.direction === 'up' && bingoDirection() === 0){
-        ourMinos.direction = 'right';
-    }else if(ourMinos.direction === 'up' && bingoDirection() === 1){
-        ourMinos.direction = ' down';
-    }else if(ourMinos.direction === 'up' && bingoDirection() === 2){
-        ourMinos.direction = 'left';
-    }else if(ourMinos.direction = 'down' && bingoDirection() === 0){
-        ourMinos.direction = 'up';
-    }else if(ourMinos.direction = 'down' && bingoDirection() === 1){
-        ourMinos.direction = 'right';
-    }else if(ourMinos.direction = 'down' && bingoDirection() === 2){
-        ourMinos.direction = 'left';
-    }else if(ourMinos.direction = 'left' && bingoDirection() === 0){
-        ourMinos.direction = 'up';
-    }else if(ourMinos.direction = 'left' && bingoDirection() === 1){
-        ourMinos.direction = 'down';
-    }else if(ourMinos.direction = 'left' && bingoDirection() === 2){
-        ourMinos.direction = 'right';
+    // COLISION HERO WITH MINOROUS
+    colisionMinos() {
+        if(this.x === ourHero.x + ourHero.size && this.y > ourHero.y - ourHero.size && this.y < ourHero.y + ourHero.size){
+            return gameOver = true;
+        }
+        if(this.y === ourHero.y + ourHero.size && this.x > ourHero.x - ourHero.size && this.x < ourHero.x + ourHero.size){
+            return gameOver = true;
+        }
+        if(this.x === ourHero.x - ourHero.size && this.y < ourHero.y + ourHero.size && this.y > ourHero.y - ourHero.size){
+         return gameOver = true;
+        }
+        if(this.y === ourHero.y - ourHero.size && this.x < ourHero.x + ourHero.size && this.x > ourHero.x - ourHero.size){
+            return gameOver = true;
+        }
     }
+
+    // MINOS AND WALL COLLISIONS
+    minosWallColision() {
+        wallStore.forEach(elem => {
+             // BORDERS CHECK
+            if(this.x <= 50){
+                this.direction = 'right';
+            }
+            else if(this.y <= 50){
+                this.direction = 'up';
+            }
+            else if(this.x >= canvas.width - 50){
+                this.direction = 'left';
+            }
+            else if(this.y >= canvas.height - 50){
+                this.direction = 'down';
+            }
+    
+            // COLLISIONS WITH WALLS
+            if(elem.x === this.x + this.size -5 && this.y > elem.y - this.size && this.y < elem.y + this.size){
+                console.log('bateu em dir')
+                this.x = this.x - 5;
+                this.direction = 'down';
+            }
+            if(elem.y === this.y + this.size -5 && this.x > elem.x - this.size && this.x < elem.x + this.size){
+                console.log('bateu em top')
+                this.y = this.y - 5;
+                this.direction = 'right';
+            }
+            if(elem.x === this.x - this.size +5 && this.y < elem.y + this.size && this.y > elem.y - this.size){
+                console.log('bateu em esq')
+                this.x = this.x + 5;
+                this.direction = 'up';
+           }
+            if(elem.y === this.y - this.size +5 && this.x < elem.x + this.size && this.x > elem.x - this.size){
+                console.log('bateu em bot')
+                this.y = this.y + 5;
+                this.direction = 'left';
+            }
+        })
+    }
+
+    // GENERATE RANDOM DIRECTION MINOS
+    randDirection() {
+        if(this.direction === 'right' && bingoDirection() === 0){
+            this.direction = 'up';
+        }else if(this.direction === 'right' && bingoDirection() === 1){
+            this.direction = 'down';
+        }else if(this.direction === 'right' && bingoDirection() === 2){
+            this.direction = 'left';
+        }else if(this.direction === 'up' && bingoDirection() === 0){
+            this.direction = 'right';
+        }else if(this.direction === 'up' && bingoDirection() === 1){
+            this.direction = ' down';
+        }else if(this.direction === 'up' && bingoDirection() === 2){
+            this.direction = 'left';
+        }else if(this.direction = 'down' && bingoDirection() === 0){
+            this.direction = 'up';
+        }else if(this.direction = 'down' && bingoDirection() === 1){
+            this.direction = 'right';
+        }else if(this.direction = 'down' && bingoDirection() === 2){
+            this.direction = 'left';
+        }else if(this.direction = 'left' && bingoDirection() === 0){
+            this.direction = 'up';
+        }else if(this.direction = 'left' && bingoDirection() === 1){
+            this.direction = 'down';
+        }else if(this.direction = 'left' && bingoDirection() === 2){
+            this.direction = 'right';
+        }
+    }
+
 }
 
 // GENERATE RANDOM NUMBER
@@ -213,90 +293,69 @@ const bingoDirection = () => {
     return r3;
 }
 
+// TROPHY POSITION
 const bingoTrophyX = () => {
-    let rtx = Math.floor(Math.random()*25);
-    let mult25x = rtx * 50 + 25;
+    let rtx = Math.floor(Math.random()*15);
+    let mult25x = rtx * 50 + 525;
     return mult25x;
 }
 
 const bingoTrophyY = () => {
-    let rty = Math.floor(Math.random()*17);
+    let rty = Math.floor(Math.random()*7);
+    let mult25y = rty * 50 + 500;
+    return mult25y;
+}
+
+// HERO START POSTION
+const bingoHeroX = () => {
+    let rtx = Math.floor(Math.random()*5);
+    let mult25x = rtx * 50 + 25;
+    return mult25x;
+}
+
+const bingoHeroY = () => {
+    let rty = Math.floor(Math.random()*7);
     let mult25y = rty * 50 + 25;
     return mult25y;
 }
 
+// MINOS START POSTION
+const bingoMinosX = () => {
+    let rtx = Math.floor(Math.random()*15);
+    let mult25x = rtx * 50 + 500;
+    return mult25x;
+}
+
+const bingoMinosY = () => {
+    let rty = Math.floor(Math.random()*7);
+    let mult25y = rty * 50 + 500;
+    return mult25y;
+}
 
 // SET TIME INTERVAL
 const timeBingo = () => {
     if(frames === 15 && bingoYorN() === 1){
-        randDirection();
+        ourMinos.randDirection();
         frames = 0;
     }else if(frames === 30 && bingoYorN() ===1) {
-        randDirection();
+        ourMinos.randDirection();
         frames = 0;
     } else if (frames > 30) {
         frames = 0
     }
-    // frames = 0;
-    // console.log(frames)
 }
 
-
-// MINOS AND WALL COLLISIONS
-const minosWallColision = () => {
-    wallStore.forEach(elem => {
-        // BORDERS CHECK
-        if(ourMinos.x <= 50){
-            ourMinos.direction = 'right';
-        }
-        else if(ourMinos.y <= 50){
-            ourMinos.direction = 'up';
-        }
-        else if(ourMinos.x >= canvas.width - 50){
-            ourMinos.direction = 'left';
-        }
-        else if(ourMinos.y >= canvas.height - 50){
-            ourMinos.direction = 'down';
-        }
-
-        // COLLISIONS WITH WALLS
-        if(elem.x === ourMinos.x + ourMinos.size -5 && ourMinos.y > elem.y - ourMinos.size && ourMinos.y < elem.y + ourMinos.size){
-            console.log('bateu em dir')
-            ourMinos.x = ourMinos.x - 5;
-            ourMinos.direction = 'up';
-        }
-        if(elem.y === ourMinos.y + ourMinos.size -5 && ourMinos.x > elem.x - ourMinos.size && ourMinos.x < elem.x + ourMinos.size){
-            console.log('bateu em top')
-            ourMinos.y = ourMinos.y - 5;
-            ourMinos.direction = 'right';
-        }
-        if(elem.x === ourMinos.x - ourMinos.size +5 && ourMinos.y < elem.y + ourMinos.size && ourMinos.y > elem.y - ourMinos.size){
-            console.log('bateu em esq')
-            ourMinos.x = ourMinos.x + 5;
-            ourMinos.direction = 'down';
-        }
-        if(elem.y === ourMinos.y - ourMinos.size +5 && ourMinos.x < elem.x + ourMinos.size && ourMinos.x > elem.x - ourMinos.size){
-            console.log('bateu em bot')
-            ourMinos.y = ourMinos.y + 5;
-            ourMinos.direction = 'left';
-        }
-    })
-}
 
 // INSTANCES
-const ourHero = new Hero();
+const ourHero = new Hero(bingoHeroX (), bingoHeroY ());
 const ourWalls = new Grid();
-const ourMinos = new Minorous();
+const ourMinos = new Minorous(bingoMinosX (), bingoMinosY ());
 const ourTrophy = new Trophy(bingoTrophyX (), bingoTrophyY ());
 
 
 // Canvas cleaner
 const resetCanvas = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // wallsX = [];
-    // wallsY = [];
-    // wallsArr = [];
-    // walls = [];
     wallStore = [];
 }
 
@@ -307,19 +366,14 @@ const startGame = () => {
     // start one random number for TROPHY X AND Y
     bingoTrophyX();
     bingoTrophyY();
-    
-    
+
 }
 
 const render = () => {
     if(gameOver === false){
+        if(gameWon === false){
         // clean everything
         resetCanvas();
-        
-        // canvas drawning
-        // ourWalls.gridWallX()
-        // ourWalls.gridWallY()
-        // ourWalls.gridCoord()
         
         // attempt drawing
         createWalls()
@@ -336,12 +390,11 @@ const render = () => {
         ourMinos.draw();
         ourMinos.moveMinos();
         
-        
-        
-        // colision check
-        colisioncheck();
-        colisionMinos();
-        minosWallColision();
+        // COLLISION CHECKER
+        ourHero.colisioncheck();
+        ourMinos.colisionMinos();
+        ourMinos.minosWallColision();
+        getItens()
         
         // increment for each loop
         frames += 1;
@@ -349,6 +402,9 @@ const render = () => {
         
         // move listener
         window.requestAnimationFrame(render)
+        } else {
+            alert('you won')
+        }
     } else {
         alert('game over')
     }
@@ -358,8 +414,8 @@ startGame()
 
 document.onkeydown = function(e) {
     ourHero.moveHero(e)
+    ourHero.catch(e)
 }
-
 
 // north, east, west, south
 // a cada n tempo, sortear qual a nova direção
