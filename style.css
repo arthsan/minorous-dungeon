@@ -3,5 +3,28 @@
 }
 
 body {
-    text-align: center
+    text-align: center;    
+}
+
+#home>h1{
+    font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+div {
+    border: 1px solid red;
+}
+
+.title-image{
+    width: 100%;
+    display: flex;
+}
+
+/* Players */
+.img-char{
+    width: 20%;
+}
+
+/* GAME OVER */
+.game-over{
+    width: 100%;
 }

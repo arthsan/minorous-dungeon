@@ -4,13 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Minorous Dungeon</title>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <canvas id="labyrinth" width="1325" height="925"></canvas>
-        <script src="script.js"></script>
+    <div id='container'>
+        <section id='home'>
+            <h1>MINOROUS DUNGEON</h1>
+            <img class='title-image' src="./images/ACOD_Minotaur.png" alt="minorous dungeon">
+            <p>Press any key</p>
+        </section>
+
+        <section  id='pagina-player-select'>
+            <div><h2>MINOROUS DUNGEONS</h1></div>
+            <div><p>Choose your Character</p></div>
+            <div class='row-characters'>
+                <div class='char1'>
+                    <p>SEGA</p>
+                    <img class='img-image' src="./images/sonic-chose.png" alt="sonic">
+                </div>
+                <div class='char2'>
+                    <p>NINTENDO</p>
+                    <img class="img-char" src="./images/mario-chose.png" alt="mario">
+                </div>
+                <div class='char3'>
+                    <p>SONY</p>
+                    <img class="img-char" src="./images/vivi-chose.png" alt="vivi">
+                </div>
+            </div>
+            <div class='row-players'>
+                <div class='player1'>
+                    <h3>PLAYERS</h3>
+                </div>
+            <div class='row-PLAY'>    
+                    <div class='PLAY1'>
+                        <button class='play1'>Player 1</button>
+                    </div>
+                    <div class='PLAY2'>
+                        <button class='play2'>Player 2</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section  id='pagina-canvas'>
+            <h3></h3>
+            <canvas id="labyrinth" width="1325" height="925"></canvas>
+        </section>
+
+        <section  id='game-over'>
+            <h2>GAME OVER</h2>
+            <img class="game-over" src="./images/game-over.png" alt="game-over">
+        </section>
+       
+        <script src="./script/hero.js"></script>
+        <script src="./script/minorous.js"></script>
+        <script src="./script/walls.js"></script>
+        <script src="./script/script.js"></script>
     </div>
+    <footer></footer>
 </body>
 </html>
