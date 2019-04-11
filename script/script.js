@@ -12,6 +12,7 @@ let arrMinos = [];
 // Loading canvas
 const canvas = document.getElementById('labyrinth');
 const ctx = canvas.getContext('2d');
+const firstScreen = document.getElementById('home');
 
 
 // GENERATE RANDOM NUMBER
@@ -95,6 +96,9 @@ const resetCanvas = () => {
 }
 
 const startGame = () => {
+    document.getElementById('player-select').style.display = 'none';
+    document.getElementById('canvas-lab').style.display = 'block';
+
     // instance minos
     arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));
     arrMinos.push(new Minorous(bingoMinosX(), bingoHeroY ()));
@@ -150,16 +154,24 @@ const render = () => {
         // move listener
         window.requestAnimationFrame(render)
         } else {
-            alert('you won')
+            document.getElementById('canvas-lab').style.display = 'none';
+            document.getElementById('game-won').style.display = 'block';
         }
     } else {
-        alert('game over')
+        document.getElementById('canvas-lab').style.display = 'none';
+        document.getElementById('game-over').style.display = 'block';
+        
     }
 }
 
-startGame()
+function selectPlayer(){
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('player-select').style.display = 'block';
+}
+
 
 document.onkeydown = function(e) {
+    e.preventDefault();
     ourHero.moveHero(e)
     ourHero.catch(e)
 }
