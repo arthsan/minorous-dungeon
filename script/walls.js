@@ -1,26 +1,27 @@
+
+
 // GRID FOR CANVAS
 class Grid{
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.img = new Image();
+        this.img.src = "images/stone-wall.jpg";
         this.width = ourHero.size;
         this.height = ourHero.size;
     }
-    
+
     // border canvas
     borderCanvas = () => {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, 25, canvas.height);
-        ctx.fillRect(0, 0, canvas.width, 25);
-        ctx.fillRect(canvas.width - 25, 0, 25, canvas.height);
-        ctx.fillRect(0, canvas.height - 25, canvas.width, 25);
+        ctx.drawImage(this.img, 0, 0, 25, canvas.height);
+        ctx.drawImage(this.img, 0, 0, canvas.width, 25);
+        ctx.drawImage(this.img, canvas.width - 25, 0, 25, canvas.height);
+        ctx.drawImage(this.img, 0, canvas.height - 25, canvas.width, 25);
     }
 
     draw() {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.img, this.x, this.y, 25, 25)
     }
-
 }
 
 

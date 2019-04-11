@@ -12,7 +12,6 @@ let arrMinos = [];
 // Loading canvas
 const canvas = document.getElementById('labyrinth');
 const ctx = canvas.getContext('2d');
-const firstScreen = document.getElementById('home');
 
 
 // GENERATE RANDOM NUMBER

@@ -2,6 +2,8 @@
     font-family: 'ZCOOL KuaiLe', cursive;
     margin: 0;
     padding: 0;
+    filter: saturate(80%);
+    color: white;
 }
 
 body {
@@ -58,7 +60,9 @@ div > h2 {
 /* Player Select */
 #player-select {
     display: none;
-    background-color: #ccc;
+    background-image: url(./images/blood-dungeon.jpg);
+    background-position: center top;
+    background-size: cover;
     height: 925px;
     width: 1325px;
     margin: 0 auto;
@@ -78,7 +82,7 @@ div > h2 {
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    background-color: rgba(233, 150, 122, .8);
+    background-color: rgba(233, 150, 122, .27);
     border: rgb(220, 20 ,60);
     border-radius: 10px;
     box-shadow: 6px 5px 28px -20px rgba(0, 0, 0, 0.75);
@@ -97,8 +101,9 @@ div > h2 {
 }
 
 .char:hover, .active {
-    filter: brightness(130%);
-    box-shadow: inset 6px 5px 28px -15px rgba(0, 0, 0, 0.75)
+    filter: brightness(130%) saturate(300%);
+    box-shadow: inset 6px 5px 28px -15px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
 }
 
 .img-char{
@@ -109,7 +114,7 @@ div > h2 {
 
 .choose-player{
     width: 50%;
-    margin: 25px 0 25px 0;
+    margin: 25px 0px 25px 100px;
 }
 
 h3 {
@@ -173,6 +178,7 @@ h3 {
 
 #labyrinth {
     background-image: url(./images/stone-background.jpg);
+    filter: grayscale(30%) saturate(80%) brightness(80%);
     background-position: center top;
     background-size: cover;
 }
