@@ -46,6 +46,10 @@ div > h2 {
     margin: 1px 0 50px 0;
 }
 
+.space {
+    padding: 100px 0 0 0;
+}
+
 .choose-text {
     font-size: 40px;
     margin: 0 0 25px 0;
@@ -101,7 +105,7 @@ div > h2 {
 }
 
 .char:hover, .active {
-    filter: brightness(130%) saturate(300%);
+    filter: brightness(150%) saturate(300%);
     box-shadow: inset 6px 5px 28px -15px rgba(0, 0, 0, 0.75);
     cursor: pointer;
 }

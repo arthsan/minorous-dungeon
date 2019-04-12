@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Minorous Dungeon</title>
+    <audio id="screen-audio" src="./audio/halloween.mp3"></audio>
+    <audio id="horror-audio" src="./audio/horror.mp3"></audio>
+    <audio id="game-over-audio" src="./audio/gameover.mp3"></audio>
+    <audio id="won-audio" src="./audio/startmusic.mp3"></audio>
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe" rel="stylesheet">
 </head>
@@ -15,33 +19,33 @@
             <p>Click to continue</p>
         </section>
         <section  id='player-select'>
-            <div><h2>MINOROUS DUNGEONS</h1></div>
+            <div class="space"></div>
             <div><h4 class="choose-text">Choose your Character</h4>
             <p class="find">You have to find treasures to unlock the featured characters.</p>
             </div>
             <div class='row-characters'>
                 <div class='charhero char'>
-                    <p>HERO</p>
+                    <p>XBOX</p>
                     <figure class="hero-image">
-                        <img class='img-char' src="./images/sonic-chose.png" alt="sonic">
+                        <img class='img-char-1' src="./images/elf-bot.png" height="170" alt="sonic">
                     </figure>
                 </div>
                 <div class='char1 char'>
                     <p>SEGA</p>
                     <figure class="hero-image">
-                        <img class='img-char' src="./images/sonic-chose.png" alt="sonic">
+                        <img class='img-char lock' src="./images/sonic.png" height="180" alt="sonic">
                     </figure>
                 </div>
                 <div class='char2 char'>
                     <p>NINTENDO</p>
                     <figure class="hero-image">
-                      <img class="img-char" src="./images/mario-chose.png" alt="mario">
+                      <img class="img-char lock" src="./images/mario-chose.png"height="200 alt="mario">
                     </figure>
                 </div>
                 <div class='char3 char'>
                     <p>SONY</p>
                     <figure class="hero-image">
-                        <img class="img-char" src="./images/vivi-chose.png" alt="vivi">
+                        <img class="img-char lock" src="./images/vivi-chose.png" height="180 alt="vivi">
                     </figure>
                 </div>
             </div>
@@ -78,6 +82,8 @@
         <script src="./script/hero.js"></script>
         <script src="./script/minorous.js"></script>
         <script src="./script/walls.js"></script>
+        <script src="./script/audio.js"></script>
+        <script src="./script/numbers.js"></script>
         <script src="./script/script.js"></script>
     </div>
     <footer></footer>

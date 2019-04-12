@@ -4,7 +4,8 @@ class Minorous{
         this.x = x;
         this.y = y;
         this.size = 50;
-        this.color = 'brown';
+        this.img = new Image();
+        this.img.src = "images/minos-right.png"
         this.direction = 'right';
     }
 
@@ -13,19 +14,22 @@ class Minorous{
         if(this.x > canvas.width - 75) this.x = canvas.width - 75;
         if(this.y < 25) this.y = 25;
         if(this.y > canvas.height - 75) this.y = canvas.height - 75;
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size)
+        ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
     }
 
     moveMinos() {
         if (this.direction === 'right') {
             this.x += 5;
+            this.img.src = "images/minos-right.png";
         }else if (this.direction === 'left'){
             this.x -= 5;
+            this.img.src = "images/minos-left.png";
         }else if (this.direction === 'up'){
             this.y += 5;
+            this.img.src = "images/minos-left.png";
         }else if (this.direction === 'down'){
             this.y -= 5;
+            this.img.src = "images/minos-up.png";
         }   
     }
 

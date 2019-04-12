@@ -4,14 +4,14 @@ class Trophy{
         this.x = x;
         this.y = y;
         this.size = 25;
-        this.color = 'gold';
+        this.img = new Image();
+        this.img.src = "images/treasure.png"
         this.position = true;
     }
 
     draw() {
         if(this.position === true){
-            ctx.fillStyle = 'gold';
-            ctx.fillRect(this.x, this.y, this.size, this.size);
+            ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
         }else {
             this.x = -10;
             this.y = -10;
@@ -25,7 +25,8 @@ class Hero {
         this.x = x;
         this.y = y;
         this.size = 25;
-        this.color = 'blue';
+        this.img = new Image();
+        this.img.src = "images/elf-bot.png";
         this.items = [];
     }
     
@@ -34,8 +35,7 @@ class Hero {
         if(this.x > canvas.width - this.size - 25) this.x = canvas.width - 50;
         if(this.y < 25) this.y = 25;
         if(this.y > canvas.height - this.size - 25) this.y = canvas.height -50;
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
         ctx.beginPath();
         ctx.fillStyle = radius(this.x + 10, this.y + 10);
         ctx.rect(this.x - 1350,this.y - 850, 2800, 1800);
@@ -45,15 +45,19 @@ class Hero {
     moveHero(e) {
         if(e.keyCode === 37) {
             this.x -= this.size/5;
+            this.img.src = "images/elf-left.png";
         }
         if(e.keyCode === 39){
             this.x += this.size/5;
+            this.img.src = "images/elf-right.png";
         }
         if(e.keyCode === 38){
             this.y -= this.size/5;
+            this.img.src = "images/elf-top.png"
         } 
         if(e.keyCode === 40){
             this.y += this.size/5;
+            this.img.src = "images/elf-bot.png"
         }
     }
 
