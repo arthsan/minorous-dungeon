@@ -8,7 +8,7 @@
 
 body {
     text-align: center;
-    background-image: url(./images/back-body.jpg);
+    background-image: url(../images/back-body.jpg);
     background-position: center top;
     background-size: cover; 
     filter: brightness(70%)
@@ -20,7 +20,7 @@ body {
 }
 
 .title-screen{
-    background-image: url(./images/gametitle.jpg);
+    background-image: url(../images/gametitle.jpg);
     background-position: center top;
     background-size: cover;  
     height: 925px;
@@ -68,7 +68,7 @@ div > h2 {
 /* Player Select */
 #player-select {
     display: none;
-    background-image: url(./images/blood-dungeon.jpg);
+    background-image: url(../images/blood-dungeon.jpg);
     background-position: center top;
     background-size: cover;
     height: 925px;
@@ -185,7 +185,7 @@ h3 {
 }
 
 #labyrinth {
-    background-image: url(./images/stone-background.jpg);
+    background-image: url(../images/stone-background.jpg);
     filter: grayscale(30%) saturate(80%) brightness(80%);
     background-position: center top;
     background-size: cover;
@@ -209,7 +209,7 @@ h3 {
 }
 
 .game-won{
-    background-image: url(./images/treasure.jpg);
+    background-image: url(../images/treasure.jpg);
     background-position: center top;
     background-size: cover;
     width: 1325px;
