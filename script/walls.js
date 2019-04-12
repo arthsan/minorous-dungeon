@@ -1,5 +1,3 @@
-
-
 // GRID FOR CANVAS
 class Grid{
     constructor(x, y) {
@@ -20,18 +18,18 @@ class Grid{
     }
 
     draw() {
-        ctx.drawImage(this.img, this.x, this.y, 25, 25)
+        ctx.drawImage(this.img, this.x, this.y, 25, 25);        
     }
 }
-
 
 // DRAWNING WALLS
 const createWalls = () => {
     for(let i = 0;i < canvas.width; i += 100){
         for(let j = 0; j< canvas.height;j += 100){
-            wallStore.push(new Grid(i, j))
+            wallStore.push(new Grid(i, j)); 
+            
         }
-    }
+    }return wallStore
 }
 
 const draWalls = () => {

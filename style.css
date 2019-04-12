@@ -7,7 +7,11 @@
 }
 
 body {
-    text-align: center;    
+    text-align: center;
+    background-image: url(./images/back-body.jpg);
+    background-position: center top;
+    background-size: cover; 
+    filter: brightness(70%)
 }
 
 /* FIRST SCREEN */
@@ -16,7 +20,7 @@ body {
 }
 
 .title-screen{
-    background-image: url(./images/ACOD_Minotaur.png);
+    background-image: url(./images/gametitle.jpg);
     background-position: center top;
     background-size: cover;  
     height: 925px;

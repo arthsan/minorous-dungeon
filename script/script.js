@@ -27,7 +27,7 @@ const ourTrophy = new Trophy(bingoTrophyX (), bingoTrophyY ());
 // Canvas cleaner
 const resetCanvas = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    wallStore = [];
+    // wallStore = [];
 }
 
 const startGame = () => {
@@ -52,6 +52,7 @@ const startGame = () => {
     bingoTrophyX();
     bingoTrophyY();
 
+    createWalls()
 }
 
 const render = () => {
@@ -61,7 +62,6 @@ const render = () => {
         resetCanvas();
         
         // attempt drawing
-        createWalls()
         draWalls()
         ourWalls.borderCanvas()
         
